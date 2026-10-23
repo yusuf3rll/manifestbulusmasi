@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manifest Buluşması</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f172a, #111827);
+      color: white;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 500px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 25px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .time {
+      font-size: 22px;
+      margin-bottom: 25px;
+      font-weight: 500;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 22px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #60a5fa, #8b5cf6);
+      transition: width 1s linear;
+    }
+
+    .percent {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .icon {
+      margin-top: 15px;
+      font-size: 22px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>MANİFEST BULUŞMASI</h1>
+    <div class="subtitle">12 Aralık 2026'ya geri sayım 💕</div>
+
+    <div class="time" id="time"></div>
+
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="percent" id="percent"></div>
+
+  </div>
+
+  <script>
+    const startDate = new Date("2026-10-01T00:00:00");
+    const targetDate = new Date("2026-12-12T00:00:00");
+    const total = targetDate - startDate;
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const elapsed = now - startDate;
+
+      if (now >= targetDate) {
+        document.getElementById("time").innerText = "ZAMAN GELDİİ!!";
+        document.getElementById("progress").style.width = "100%";
+        document.getElementById("percent").innerText = "%100 tamamlandı";
+        return;
+      }
+
+      const remaining = targetDate - now;
+
+      const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((remaining / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((remaining / (1000 * 60)) % 60);
+      const seconds = Math.floor((remaining / 1000) % 60);
+
+      document.getElementById("time").innerText =
+        `${days} gün ${hours} saat ${minutes} dk ${seconds} sn kaldı`;
+
+      let percent = (elapsed / total) * 100;
+      percent = clamp(percent, 0, 100);
+
+      document.getElementById("progress").style.width = percent + "%";
+      document.getElementById("percent").innerText =
+        `%${percent.toFixed(2)} tamamlandı`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+
+</body>
+</html>
